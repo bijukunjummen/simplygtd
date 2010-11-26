@@ -22,7 +22,6 @@ public class JpaGtdUserDao extends JpaDao<Long, GtdUser> implements GtdUserDao {
     public GtdUser findUserByUserName(String username) {
 		TypedQuery<GtdUser> q = this.getEntityManager().createQuery("select o from GtdUser o where o.username=:username", GtdUser.class);
 		q.setParameter("username", username);
-		List<GtdUser> gtdUsers = q.getResultList();
-		return gtdUsers.get(0);
+		return  q.getSingleResult();
     }
 }
