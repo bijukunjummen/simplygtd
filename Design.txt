@@ -1,0 +1,17 @@
+Contexts:
+name
+created_date
+updated_date
+
+Action:
+name
+Description
+
+
+Projects:
+
+State:
+Inbox, Someday/Maybe, Reference, Do Asap, Delegated, Scheduled
+
+Open/Closed State:
+Open, Done

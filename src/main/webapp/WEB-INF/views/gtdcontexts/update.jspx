@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_org_bk_simplygtd_domain_GtdContext" modelAttribute="gtdContext" path="/gtdcontexts" z="6Odv7ycMtXECkBueKhUinpTqxpA=">
+        <field:textarea field="name" id="c_org_bk_simplygtd_domain_GtdContext_name" z="yZjgjQKYQw2U//7ZmI6NK7HA1lc="/>
+        <field:select field="gtdUser" id="c_org_bk_simplygtd_domain_GtdContext_gtdUser" itemValue="id" items="${gtdusers}" path="/gtdusers" z="ZDNnn/BArc5bQnuSvC/3Sv9I/kc="/>
+    </form:update>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_org_bk_simplygtd_domain_GtdProject" modelAttribute="gtdProject" path="/gtdprojects" render="${empty dependencies}" z="JCh6iZWEaAaGrXkZjMrf7kQ7QqI=">
+        <field:textarea field="name" id="c_org_bk_simplygtd_domain_GtdProject_name" z="x8mH3s6dLxMY4vDXqPNw41syWwA="/>
+        <field:datetime dateTimePattern="${gtdProject_startdate_date_format}" field="startDate" id="c_org_bk_simplygtd_domain_GtdProject_startDate" z="T8bpiIKycYAnhEGz3uhdWr8BorY="/>
+        <field:datetime dateTimePattern="${gtdProject_completeddate_date_format}" field="completedDate" id="c_org_bk_simplygtd_domain_GtdProject_completedDate" z="qBH2KmMykWEIjBhhSse5v8vyf8c="/>
+        <field:checkbox field="isDone" id="c_org_bk_simplygtd_domain_GtdProject_isDone" z="JkXoIVGUZVQ6Jey4m7sp9bGeyJo="/>
+        <field:select field="gtdUser" id="c_org_bk_simplygtd_domain_GtdProject_gtdUser" itemValue="id" items="${gtdusers}" path="/gtdusers" z="040l8E+UCDPgQks1ylOR6rZA67Y="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_org_bk_simplygtd_domain_GtdProject" render="${not empty dependencies}" z="Nf4orQPOM0nZwDxggTW6TeLnyVY="/>
+</div>

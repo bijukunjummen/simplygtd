@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_bk_simplygtd_domain_GtdNote" items="${gtdnotes}" z="JJvtIqIOaASu6/yo/Nh8AozYBvI=">
+        <table:table data="${gtdnotes}" id="l_org_bk_simplygtd_domain_GtdNote" path="/gtdnotes" z="VYNv74xT9t2BjHgHlVodzaJ7uMU=">
+            <table:column id="c_org_bk_simplygtd_domain_GtdNote_title" property="title" z="c1i3DWbvQqjDn0ve2W0kvltAlhA="/>
+        </table:table>
+    </page:list>
+</div>

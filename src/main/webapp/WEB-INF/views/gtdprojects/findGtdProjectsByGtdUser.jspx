@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:find finderName="ByGtdUser" id="ff_org_bk_simplygtd_domain_GtdProject" path="/gtdprojects" z="W7nYMm3ZM8SWWI6J/6LszzQo5Aw=">
+        <field:select disableFormBinding="true" field="gtdUser" id="f_org_bk_simplygtd_domain_GtdProject_gtdUser" itemValue="id" items="${gtdusers}" path="/gtdusers" z="aeZNPysqJUle4wfkPWCjdtvvUbw="/>
+    </form:find>
+</div>

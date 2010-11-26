@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_org_bk_simplygtd_domain_GtdAction" object="${gtdaction}" path="/gtdactions" z="0DyuwfsIHVYhae23PXGsDSShBgM=">
+        <field:display field="title" id="s_org_bk_simplygtd_domain_GtdAction_title" object="${gtdaction}" z="5qxz1lovaSFq7RuC82ypJXWNulQ="/>
+        <field:display field="project" id="s_org_bk_simplygtd_domain_GtdAction_project" object="${gtdaction}" z="4h6ngndd5XXl3wpI29spMH2mTy4="/>
+        <field:display field="gtdContext" id="s_org_bk_simplygtd_domain_GtdAction_gtdContext" object="${gtdaction}" z="wCgs3Z3huuivUb6F1g5rD+NvIE4="/>
+        <field:display date="true" dateTimePattern="${gtdAction_startdate_date_format}" field="startDate" id="s_org_bk_simplygtd_domain_GtdAction_startDate" object="${gtdaction}" z="YFYu9lPbNaYEshRqldua1x1fdBE="/>
+        <field:display date="true" dateTimePattern="${gtdAction_completeddate_date_format}" field="completedDate" id="s_org_bk_simplygtd_domain_GtdAction_completedDate" object="${gtdaction}" z="UvyLu+4rxvMCtxXzHXYI+T/Upp0="/>
+        <field:display field="isDone" id="s_org_bk_simplygtd_domain_GtdAction_isDone" object="${gtdaction}" z="TpngAauxbk16oy6MHEhIOl5guCI="/>
+        <field:display field="status" id="s_org_bk_simplygtd_domain_GtdAction_status" object="${gtdaction}" z="oP+40R8IRz2JbApnMkBU9N4M3VU="/>
+        <field:display field="gtdUser" id="s_org_bk_simplygtd_domain_GtdAction_gtdUser" object="${gtdaction}" z="JsyeDvnarLh4oI3/bi7NIJmA0pI="/>
+    </page:show>
+</div>
