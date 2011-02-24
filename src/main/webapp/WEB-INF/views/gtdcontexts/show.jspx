@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_org_bk_simplygtd_domain_GtdContext" object="${gtdcontext}" path="/gtdcontexts" z="iN8Caj6L/OkMWb+lycCZla92R2w=">
-        <field:display field="name" id="s_org_bk_simplygtd_domain_GtdContext_name" object="${gtdcontext}" z="L56rdCIwq+wtDalQyLsG4kx4mMM="/>
-        <field:display field="gtdUser" id="s_org_bk_simplygtd_domain_GtdContext_gtdUser" object="${gtdcontext}" z="431MZU/avGr1fKXU8XQ/uyBiwxM="/>
+    <page:show id="ps_org_bk_simplygtd_domain_GtdContext" object="${gtdcontext}" path="/gtdcontexts">
+        <field:display field="name" id="s_org_bk_simplygtd_domain_GtdContext_name" object="${gtdcontext}" />
     </page:show>
 </div>

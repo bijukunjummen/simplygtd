@@ -26,12 +26,14 @@ import org.springframework.web.util.WebUtils;
 @Controller
 public class GtdContextController {
 	@Resource private GtdContextService gtdContextService;
-	@Resource private GtdUserDao gtdUserDao;
 	
     @RequestMapping(method = RequestMethod.POST)
     public String create(@Valid GtdContext gtdContext, BindingResult result, Model model, HttpServletRequest request) {
+    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	GtdUser gtdUser = ((CustomGtdUserAdapter)principal).getGtdUser();
+    	gtdContext.setGtdUser(gtdUser);
         if (result.hasErrors()) {
-            model.addAttribute("gtdcontext", gtdContext);
+            model.addAttribute("gtdContext", gtdContext);
             return "gtdcontexts/create";
         }
         this.gtdContextService.persist(gtdContext);
@@ -40,7 +42,7 @@ public class GtdContextController {
 
     @RequestMapping(params = "form", method = RequestMethod.GET)
     public String createForm(Model model) {
-        model.addAttribute("gtdcontext", new GtdContext());
+        model.addAttribute("gtdContext", new GtdContext());
         return "gtdcontexts/create";
     }
     
@@ -54,15 +56,14 @@ public class GtdContextController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model model) {
     	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	GtdUser gtdUser1 = ((CustomGtdUserAdapter)principal).getGtdUser();
-    	GtdUser gtdUser = this.gtdUserDao.findById(gtdUser1.getId());
+    	GtdUser gtdUser = ((CustomGtdUserAdapter)principal).getGtdUser();
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             model.addAttribute("gtdcontexts", this.gtdContextService.findContextsByGtdUser(gtdUser, page == null ? 0 : (page.intValue() - 1) * sizeNo, sizeNo));
             float nrOfPages = (float) this.gtdContextService.countContexts(gtdUser) / sizeNo;
             model.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            model.addAttribute("gtdcontexts", this.gtdContextService.findContextsByGtdUser(gtdUser1));
+            model.addAttribute("gtdcontexts", this.gtdContextService.findContextsByGtdUser(gtdUser));
         }
         return "gtdcontexts/list";
     }
@@ -70,7 +71,7 @@ public class GtdContextController {
     @RequestMapping(method = RequestMethod.PUT)
     public String update(@Valid GtdContext gtdContext, BindingResult result, Model model, HttpServletRequest request) {
         if (result.hasErrors()) {
-            model.addAttribute("gtdcontext", gtdContext);
+            model.addAttribute("gtdContext", gtdContext);
             return "gtdcontexts/update";
         }
         this.gtdContextService.update(gtdContext);
@@ -79,7 +80,7 @@ public class GtdContextController {
     
     @RequestMapping(value = "/{id}", params = "form", method = RequestMethod.GET)
     public String updateForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("gtdcontext", this.gtdContextService.findById(id));
+        model.addAttribute("gtdContext", this.gtdContextService.findById(id));
         return "gtdcontexts/update";
     }
     
