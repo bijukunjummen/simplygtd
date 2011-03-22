@@ -6,12 +6,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.bk.simplygtd.dao.GtdUserDao;
-import org.bk.simplygtd.domain.CustomGtdUserAdapter;
 import org.bk.simplygtd.domain.GtdContext;
-import org.bk.simplygtd.domain.GtdUser;
 import org.bk.simplygtd.service.GtdContextService;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,13 +28,13 @@ public class GtdContextController {
     @RequestMapping(method = RequestMethod.POST)
     public String create(@Valid GtdContext gtdContext, BindingResult result, Model model, HttpServletRequest request) {
     	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	GtdUser gtdUser = ((CustomGtdUserAdapter)principal).getGtdUser();
-    	gtdContext.setGtdUser(gtdUser);
+    	String userName = ((User)principal).getUsername();
+
         if (result.hasErrors()) {
             model.addAttribute("gtdContext", gtdContext);
             return "gtdcontexts/create";
         }
-        this.gtdContextService.persist(gtdContext);
+        this.gtdContextService.persistForUser(gtdContext, userName);
         return "redirect:/gtdcontexts/" + encodeUrlPathSegment(gtdContext.getId().toString(), request);
     }
 
@@ -54,17 +52,15 @@ public class GtdContextController {
     }
     
     @RequestMapping(method = RequestMethod.GET)
-    public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model model) {
+    public String list(@RequestParam(value = "page", required = false, defaultValue="1") Integer page, @RequestParam(value = "size", required = false) Integer size, Model model) {
     	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	GtdUser gtdUser = ((CustomGtdUserAdapter)principal).getGtdUser();
-        if (page != null || size != null) {
-            int sizeNo = size == null ? 10 : size.intValue();
-            model.addAttribute("gtdcontexts", this.gtdContextService.findContextsByGtdUser(gtdUser, page == null ? 0 : (page.intValue() - 1) * sizeNo, sizeNo));
-            float nrOfPages = (float) this.gtdContextService.countContexts(gtdUser) / sizeNo;
-            model.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
-        } else {
-            model.addAttribute("gtdcontexts", this.gtdContextService.findContextsByGtdUser(gtdUser));
-        }
+    	String userName = ((User)principal).getUsername();
+    	
+
+    	int sizeNo = size == null ? 10 : size.intValue();
+    	model.addAttribute("gtdcontexts", this.gtdContextService.findContextsByGtdUserName(userName, page == null ? 0 : (page.intValue() - 1) * sizeNo, sizeNo));
+    	float nrOfPages = (float) this.gtdContextService.countContextsByUserName(userName) / sizeNo;
+    	model.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         return "gtdcontexts/list";
     }
     
@@ -74,7 +70,9 @@ public class GtdContextController {
             model.addAttribute("gtdContext", gtdContext);
             return "gtdcontexts/update";
         }
-        this.gtdContextService.update(gtdContext);
+    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	String userName = ((User)principal).getUsername();        
+        this.gtdContextService.updateForUser(gtdContext, userName);
         return "redirect:/gtdcontexts/" + encodeUrlPathSegment(gtdContext.getId().toString(), request);
     }
     

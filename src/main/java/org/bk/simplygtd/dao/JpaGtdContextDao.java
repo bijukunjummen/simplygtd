@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import org.bk.simplygtd.domain.GtdContext;
-import org.bk.simplygtd.domain.GtdUser;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,13 +15,7 @@ public class JpaGtdContextDao extends JpaDao<Long, GtdContext> implements GtdCon
 		return this.entityManager.createQuery("select o from GtdContext o", GtdContext.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Override
-	public List<GtdContext> findContextsByGtdUser(GtdUser gtdUser) {
-        if (gtdUser == null) throw new IllegalArgumentException("The gtdUser argument is required");
-        TypedQuery<GtdContext> q = this.entityManager.createQuery("SELECT o FROM GtdContext o WHERE o.gtdUser = :gtdUser", GtdContext.class);
-        q.setParameter("gtdUser", gtdUser);
-        return q.getResultList();
-	}
+
 
 	@Override
 	public List<GtdContext> findContextsByName(String name) {
@@ -32,18 +25,19 @@ public class JpaGtdContextDao extends JpaDao<Long, GtdContext> implements GtdCon
 		return q.getResultList();
 	}
 
+
 	@Override
-    public List<GtdContext> findContextsByGtdUser(GtdUser gtdUser, int firstResult, int maxResults) {
-        if (gtdUser == null) throw new IllegalArgumentException("The gtdUser argument is required");
-        TypedQuery<GtdContext> q = this.entityManager.createQuery("SELECT o FROM GtdContext o WHERE o.gtdUser = :gtdUser", GtdContext.class);
-        q.setParameter("gtdUser", gtdUser);
+    public List<GtdContext> findContextsByGtdUser(String userName, int firstResult, int maxResults) {
+        TypedQuery<GtdContext> q = this.entityManager.createQuery("SELECT o FROM GtdContext o WHERE o.gtdUser.username = :userName", GtdContext.class);
+        q.setParameter("userName", userName);
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
+
 	@Override
-    public long countContexts(GtdUser gtdUser) {
-		TypedQuery<Long> q = this.getEntityManager().createQuery("select count(o) from GtdContext o where o.gtdUser=:gtdUser", Long.class);
-		q.setParameter("gtdUser", gtdUser);
+    public Long countContextsByUserName(String userName) {
+		TypedQuery<Long> q = this.getEntityManager().createQuery("select count(o) from GtdContext o where o.gtdUser.username=:userName", Long.class);
+        q.setParameter("userName", userName);
 		return q.getSingleResult();
     }
 

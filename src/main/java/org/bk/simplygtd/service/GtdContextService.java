@@ -3,14 +3,12 @@ package org.bk.simplygtd.service;
 import java.util.List;
 
 import org.bk.simplygtd.domain.GtdContext;
-import org.bk.simplygtd.domain.GtdUser;
 
 public interface GtdContextService {
-	List<GtdContext> findContextsByGtdUser(GtdUser gtdUser);
-	GtdContext persist(GtdContext gtdContext);
+	GtdContext persistForUser(GtdContext gtdContext, String userName);
 	GtdContext findById(Long id);
-	List<GtdContext> findContextsByGtdUser(GtdUser gtdUser, int firstResult, int maxResults);
-	long countContexts(GtdUser gtdUser);
-	GtdContext update(GtdContext gtdContext);
+	List<GtdContext> findContextsByGtdUserName(String userName, int firstResult, int maxResults);
+	Long countContextsByUserName(String userName);
+	GtdContext updateForUser(GtdContext gtdContext, String userName);
 	void remove(GtdContext gtdContext);
 }
