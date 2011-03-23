@@ -1,59 +1,93 @@
-<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-  <jsp:output omit-xml-declaration="yes" />
-  <spring:message code="security_login_title" var="title" />
-  <util:panel id="title" title="${title}">
-    <c:if test="${not empty param.login_error}">
-      <div class="errors">
-        <p>
-          <spring:message code="security_login_unsuccessful" />
-          <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
-          .
-        </p>
-      </div>
-    </c:if>
-    <c:if test="${empty param.login_error}">
-      <p>
-        <spring:message code="security_login_message" />
-      </p>
-    </c:if>
-    <spring:url value="/resources/j_spring_security_check" var="form_url" />
-    <form name="f" action="${fn:escapeXml(form_url)}" method="POST">
-      <div>
-        <label for="j_username">
-          <spring:message code="security_login_form_name" />
-        </label>
-        <input id="j_username" type='text' name='j_username' style="width:150px" />
-        <spring:message code="security_login_form_name_message" var="name_msg" />
-        <script type="text/javascript">
-          <c:set var="sec_name_msg">
-            <spring:escapeBody javaScriptEscape="true">${name_msg}</spring:escapeBody>
-          </c:set>
-          Spring.addDecoration(new Spring.ElementDecoration({elementId : "j_username", widgetType : "dijit.form.ValidationTextBox", widgetAttrs : {promptMessage: "${sec_name_msg}", required : true}})); 
-        </script>
-      </div>
-      <br />
-      <div>
-        <label for="j_password">
-          <spring:message code="security_login_form_password" />
-        </label>
-        <input id="j_password" type='password' name='j_password' style="width:150px" />
-        <spring:message code="security_login_form_password_message" var="pwd_msg" />
-        <script type="text/javascript">
-          <c:set var="sec_pwd_msg">
-            <spring:escapeBody javaScriptEscape="true">${pwd_msg}</spring:escapeBody>
-          </c:set>
-          Spring.addDecoration(new Spring.ElementDecoration({elementId : "j_password", widgetType : "dijit.form.ValidationTextBox", widgetAttrs : {promptMessage: "${sec_pwd_msg}", required : true}})); 
-        </script>
-      </div>
-      <br />
-      <div class="submit">
-        <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
-        <spring:message code="button_submit" var="submit_label" />
-        <input id="proceed" type="submit" value="${fn:escapeXml(submit_label)}" />
-        <spring:message code="button_reset" var="reset_label" />
-        <input id="reset" type="reset" value="${fn:escapeXml(reset_label)}" />
-      </div>
-    </form>
-  </util:panel>
-</div>
+<script type="text/javascript">
 
+Ext.onReady(function(){
+    Ext.QuickTips.init();
+ 
+    // Create a variable to hold our EXT Form Panel. 
+    // Assign various config options as seen.    
+    var login = new Ext.FormPanel({ 
+        labelWidth:80,
+        url:'login.asp', 
+        frame:true, 
+        title:'Please Login', 
+        defaultType:'textfield',
+    monitorValid:true,
+    // Specific attributes for the text fields for username / password. 
+    // The "name" attribute defines the name of variables sent to the server.
+        items:[{ 
+                fieldLabel:'Username', 
+                name:'loginUsername', 
+                allowBlank:false 
+            },{ 
+                fieldLabel:'Password', 
+                name:'loginPassword', 
+                inputType:'password', 
+                allowBlank:false 
+            }],
+ 
+    // All the magic happens after the user clicks the button     
+        buttons:[{ 
+                text:'Login',
+                formBind: true,  
+                // Function that fires when user clicks the button 
+                handler:function(){ 
+                    login.getForm().submit({ 
+                        method:'POST', 
+                        waitTitle:'Connecting', 
+                        waitMsg:'Sending data...',
+ 
+            // Functions that fire (success or failure) when the server responds. 
+            // The one that executes is determined by the 
+            // response that comes from login.asp as seen below. The server would 
+            // actually respond with valid JSON, 
+            // something like: response.write "{ success: true}" or 
+            // response.write "{ success: false, errors: { reason: 'Login failed. Try again.' }}" 
+            // depending on the logic contained within your server script.
+            // If a success occurs, the user is notified with an alert messagebox, 
+            // and when they click "OK", they are redirected to whatever page
+            // you define as redirect. 
+ 
+                        success:function(){ 
+                            Ext.Msg.alert('Status', 'Login Successful!', function(btn, text){
+                   if (btn == 'ok'){
+                                var redirect = 'test.asp'; 
+                                window.location = redirect;
+                                   }
+                    });
+                        },
+ 
+            // Failure function, see comment above re: success and failure. 
+            // You can see here, if login fails, it throws a messagebox
+            // at the user telling him / her as much.  
+ 
+                        failure:function(form, action){ 
+                            if(action.failureType == 'server'){ 
+                                obj = Ext.util.JSON.decode(action.response.responseText); 
+                                Ext.Msg.alert('Login Failed!', obj.errors.reason); 
+                            }else{ 
+                                Ext.Msg.alert('Warning!', 'Authentication server is unreachable : ' + action.response.responseText); 
+                            } 
+                            login.getForm().reset(); 
+                        } 
+                    }); 
+                } 
+            }] 
+    });
+ 
+ 
+    // This just creates a window to wrap the login form. 
+    // The login object is passed to the items collection.       
+    var win = new Ext.Window({
+        layout:'fit',
+        width:300,
+        height:150,
+        closable: false,
+        resizable: false,
+        plain: true,
+        border: false,
+        items: [login]
+    });
+    win.show();
+});
+
+</script>
