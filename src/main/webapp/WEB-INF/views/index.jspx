@@ -1,5 +1,6 @@
 <script type="text/javascript" xmlns:c="http://java.sun.com/jsp/jstl/core" 
 	xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<![CDATA[	
 Ext.onReady(function(){
     Ext.QuickTips.init();
     var viewPort = new Ext.Viewport({
@@ -39,5 +40,5 @@ Ext.onReady(function(){
 
        })
     });
-
+]]>
 </script>
