@@ -21,32 +21,19 @@ Ext.onReady(function(){
             region: 'west',
             collapsible: true,
             floatable: true,
-            title: 'Starts at width 30%',
+            title: 'Contexts/Projects..',
             split: true,
             width: '30%',
             html: 'west<br/>I am floatable'
         },{
             region: 'center',
-            title: 'Center',
+            title: 'Action...',
             layout: 'border',
             border: false,
             items: [{
                 region: 'center',
                 html: 'center center',
-                items: [cw = Ext.create('Ext.Window', {
-                    xtype: 'window',
-                    closable: false,
-                    minimizable: true,
-                    title: 'Constrained Window',
-                    height: 200,
-                    width: 400,
-                    constrain: true,
-                    html: 'I am in a Container',
-                    itemId: 'center-window',
-                    minimize: function() {
-                        this.floatParent.down('button#toggleCw').toggle();
-                    }
-                })]
+                items: []
             }]
         }]
 

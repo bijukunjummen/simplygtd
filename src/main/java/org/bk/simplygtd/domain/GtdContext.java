@@ -5,10 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table(name="gtdcontexts")
@@ -18,6 +21,7 @@ public class GtdContext {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name="gtduser_id")
     private GtdUser gtdUser;
     
     public String getName() {
@@ -44,6 +48,7 @@ public class GtdContext {
         this.id = id;
     }
     
+    @JsonIgnore
     public Integer getVersion() {
         return this.version;
     }
@@ -52,6 +57,7 @@ public class GtdContext {
         this.version = version;
     }
 
+    @JsonIgnore
     public GtdUser getGtdUser() {
         return this.gtdUser;
     }

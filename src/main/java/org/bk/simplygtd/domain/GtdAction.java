@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -15,6 +16,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -25,9 +27,11 @@ public class GtdAction {
     private String title;
 
     @ManyToOne
+    @JoinColumn(name="gtdproject_id")
     private GtdProject project;
 
     @ManyToOne
+    @JoinColumn(name="gtdcontext_id")
     private GtdContext gtdContext;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,6 +48,7 @@ public class GtdAction {
     private GtdStatus status;
     
     @ManyToOne
+    @JoinColumn(name="gtduser_id")
     private GtdUser gtdUser;
 
     public String getTitle() {
@@ -119,6 +124,7 @@ public class GtdAction {
         this.id = id;
     }
     
+    @JsonIgnore
     public Integer getVersion() {
         return this.version;
     }
@@ -126,6 +132,8 @@ public class GtdAction {
     public void setVersion(Integer version) {
         this.version = version;
     }
+    
+    @JsonIgnore
     public GtdUser getGtdUser() {
         return this.gtdUser;
     }

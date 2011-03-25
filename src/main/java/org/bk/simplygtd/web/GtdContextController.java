@@ -1,6 +1,8 @@
 package org.bk.simplygtd.web;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -63,7 +68,24 @@ public class GtdContextController {
     	model.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         return "gtdcontexts/list";
     }
-    
+
+    @RequestMapping(value="jsonlist", method = RequestMethod.GET)
+    public ModelAndView jsonlist(@RequestParam(value = "page", required = false, defaultValue="1") Integer page, @RequestParam(value = "size", required = false) Integer size) {
+    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	String userName = ((User)principal).getUsername();    	
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+    	
+    	int sizeNo = size == null ? 10 : size.intValue();
+    	modelMap.put("gtdcontexts", this.gtdContextService.findContextsByGtdUserName(userName, page == null ? 0 : (page.intValue() - 1) * sizeNo, sizeNo));
+    	float nrOfPages = (float) this.gtdContextService.countContextsByUserName(userName) / sizeNo;
+    	modelMap.put("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+
+    	MappingJacksonJsonView mappingJacksonView = new MappingJacksonJsonView();
+		ModelAndView modelAndView = new ModelAndView(mappingJacksonView, modelMap);
+		return modelAndView;
+    	
+    }
+
     @RequestMapping(method = RequestMethod.PUT)
     public String update(@Valid GtdContext gtdContext, BindingResult result, Model model, HttpServletRequest request) {
         if (result.hasErrors()) {

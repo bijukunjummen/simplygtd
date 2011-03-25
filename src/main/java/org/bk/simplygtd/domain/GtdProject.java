@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -13,6 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -33,6 +35,7 @@ public class GtdProject{
     private Boolean isDone;
 
     @ManyToOne
+    @JoinColumn(name="gtduser_id")
     private GtdUser gtdUser;
     
     @Id
@@ -52,6 +55,7 @@ public class GtdProject{
         this.id = id;
     }
     
+    @JsonIgnore
     public Integer getVersion() {
         return this.version;
     }
@@ -91,6 +95,8 @@ public class GtdProject{
     public void setIsDone(Boolean isDone) {
         this.isDone = isDone;
     }
+    
+    @JsonIgnore
     public GtdUser getGtdUser() {
         return this.gtdUser;
     }

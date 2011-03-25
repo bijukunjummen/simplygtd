@@ -237,6 +237,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- Jackson JSON Processor -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-core</artifactId>
