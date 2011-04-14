@@ -77,8 +77,8 @@ public class GtdContextController {
     	
     	int sizeNo = size == null ? 10 : size.intValue();
     	modelMap.put("gtdcontexts", this.gtdContextService.findContextsByGtdUserName(userName, page == null ? 0 : (page.intValue() - 1) * sizeNo, sizeNo));
-    	float nrOfPages = (float) this.gtdContextService.countContextsByUserName(userName) / sizeNo;
-    	modelMap.put("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+    	Long totalSize =  this.gtdContextService.countContextsByUserName(userName);
+    	modelMap.put("totalSize", totalSize);
 
     	MappingJacksonJsonView mappingJacksonView = new MappingJacksonJsonView();
 		ModelAndView modelAndView = new ModelAndView(mappingJacksonView, modelMap);
