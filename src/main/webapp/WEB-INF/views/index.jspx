@@ -1,15 +1,13 @@
 <script type="text/javascript" xmlns:c="http://java.sun.com/jsp/jstl/core" 
 	xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 <spring:url var="gtdcontextsJsonlistUrl" value="/gtdcontexts/jsonlist" />
-
+<![CDATA[
 var GLOBAL={}
-
-<![CDATA[	
 Ext.onReady(function(){
     Ext.regModel('Context',{
         fields: [
-     	        {name: 'id', type: 'string'},
-    	    	{name: 'name', type: 'string'}
+                 {name: 'id', type: 'string'},
+                 {name: 'name', type: 'string'}
      	],
         proxy: {
             type: 'ajax',
@@ -22,31 +20,19 @@ Ext.onReady(function(){
         }
     });	
 
-	GLOBAL.contextstore=Ext.create('Ext.data.Store', {
-        model: 'Context',
-
-    });
-		
-	
-		
-	
+	GLOBAL.contextstore=Ext.create('Ext.data.Store', {model: 'Context'});
 	GLOBAL.contextstore.load({params:{start:0, limit:5}});
-	
 	GLOBAL.contextsgrid = new Ext.grid.GridPanel({
     	title: 'Contexts',
-    	headers: [{
-    	                text: 'Name',
-    	                sortable: false,
-    	                dataIndex: 'name'
-    	          
-    			}],
+        headers: [{
+            text: '',
+            sortable: false,
+            dataIndex: 'name'    	          
+    	}],
     	store: GLOBAL.contextstore,
-        viewConfig: {
-            forceFit:true
-        },
-        columnLines: true        
+        viewConfig: {forceFit:true},
+        columnLines: false        
 	});	
-
 	
     Ext.QuickTips.init();
     var viewPort = new Ext.Viewport({
@@ -67,7 +53,7 @@ Ext.onReady(function(){
         },{
             region: 'west',
             collapsible: true,
-            floatable: true,
+            floatable: false,
             title: 'Contexts/Projects..',
             split: true,
             width: '30%',
@@ -79,12 +65,9 @@ Ext.onReady(function(){
             border: false,
             items: [{
             	region:'center',
-            	items:[
-                ]
-            }
-            ]
+            	items:[]
+            }]
         }]
-
        })
     });
 ]]>
