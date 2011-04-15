@@ -5,8 +5,8 @@
   <jsp:output omit-xml-declaration="yes" />
 
 
-  <spring:url value="/resources/ext-js/ext-all.js" var="ext_all" />
-  <spring:url value="/resources/ext-js/ext-core.js" var="ext_core" />
+  <spring:url value="/resources/ext-js/ext-all-debug.js"  var="ext_all" />
+  <spring:url value="/resources/ext-js/ext-core-debug.js" var="ext_core" />
   <spring:url value="/resources/ext-js/css/ext-all.css" var="ext_css" />
   <spring:url value="/resources/images/favicon.ico" var="favicon" />
 

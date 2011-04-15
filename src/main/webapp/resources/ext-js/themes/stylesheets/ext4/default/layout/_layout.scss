@@ -1,5 +1,4 @@
 @mixin extjs-layout {
-
     .#{$prefix}docked {
         position: absolute;
         z-index: 1;
@@ -29,6 +28,10 @@
     
     .#{$prefix}overflow-hidden {
         overflow:hidden !important;
+    }    
+    
+    .#{$prefix}inline-children > * {
+        display: inline-block !important;
     }
     
     .#{$prefix}abs-layout-item {
@@ -36,11 +39,11 @@
     }
     
     .#{$prefix}border-layout-ct {
-        background-color: mix($base-color, #fff, 15);
+        background-color: $border-layout-ct-background;
     }
 
     .#{$prefix}border-region-slide-in {
-        z-index: 3;
+        z-index: 5;
     }
 
     .#{$prefix}region-collapsed-placeholder {
@@ -48,7 +51,7 @@
     }
 
     .#{$prefix}accordion-hd .#{$prefix}panel-header-text {
-        color: #222;
+        color: $panel-header-color;
         font-weight: normal;
     }
 
@@ -84,6 +87,13 @@
                 background-position: -15px -240px;
             }
         }
+        
+        background-image: none;
+        @if $accordion-header-background-gradient {
+            @include background-gradient($accordion-header-background-color, $accordion-header-background-gradient);
+        } else {
+            background: $accordion-header-background-color;
+        }
     }
 
     .#{$prefix}frame-tl,
@@ -116,14 +126,17 @@
     .#{$prefix}box-scroller-left {
         float: left;
         height: 100%;
+        
+        z-index: 5;
 
         .#{$prefix}tabbar-scroll-left {
             width: 18px;
             position: relative;
             top: 1px;
             cursor: pointer;
-            height: 25px;
+            height: 26px;
             background: theme-image($theme-name, 'tab-bar/scroll-left.gif') transparent no-repeat -18px 0;
+            border-bottom: 1px solid $tab-border-color;
         }
         .#{$prefix}tabbar-scroll-left-hover {
             background-position: 0 0;
@@ -134,20 +147,23 @@
         }
     }
 
-    .#{$prefix}horizontal-box-scroller-body {
+    .#{$prefix}horizontal-box-overflow-body {
         float: left;
     }
     .#{$prefix}box-scroller-right {
         float: right;
         height: 100%;
+        
+        z-index: 5;
 
         .#{$prefix}tabbar-scroll-right {
             width: 18px;
             position: relative;
             top: 1px;
             cursor: pointer;
-            height: 25px;
+            height: 26px;
             background: theme-image($theme-name, 'tab-bar/scroll-right.gif') transparent no-repeat 0 0;
+            border-bottom: 1px solid $tab-border-color;
         }
         .#{$prefix}tabbar-scroll-right-hover {
             background-position: -18px 0;

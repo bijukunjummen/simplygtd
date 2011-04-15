@@ -3,7 +3,13 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	
 <spring:url value="/resources/j_spring_security_check" var="form_url" />
-
+Ext.require([
+             'Ext.grid.*',
+             'Ext.data.*',
+             'Ext.util.*',
+             'Ext.state.*',
+             'Ext.form.*'
+         ]);
 Ext.onReady(function(){
     Ext.QuickTips.init(); 
     var login = new Ext.FormPanel({ 

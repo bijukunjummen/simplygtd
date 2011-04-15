@@ -2,6 +2,14 @@
 	xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 <spring:url var="gtdcontextsJsonlistUrl" value="/gtdcontexts/jsonlist" />
 <![CDATA[
+Ext.require([
+             'Ext.grid.*',
+             'Ext.data.*',
+             'Ext.util.*',
+             'Ext.state.*',
+             'Ext.form.*'
+         ]);
+
 var GLOBAL={}
 Ext.onReady(function(){
     Ext.regModel('Context',{
@@ -22,17 +30,49 @@ Ext.onReady(function(){
 
 	GLOBAL.contextstore=Ext.create('Ext.data.Store', {model: 'Context'});
 	GLOBAL.contextstore.load({params:{start:0, limit:5}});
+	var rowEditing = new Ext.grid.RowEditing();
 	GLOBAL.contextsgrid = new Ext.grid.GridPanel({
     	title: 'Contexts',
-        headers: [{
-            text: '',
-            sortable: false,
-            dataIndex: 'name'    	          
-    	}],
+    	plugins: [rowEditing],
+    	tbar: [
+    	   {
+    		    iconCls: 'icon-user-add',
+    		    text: 'Add Context',
+    		    handler: function(){}
+    	   },{
+                iconCls: 'icon-user-delete',
+                text: 'Remove Context',
+                disabled: true,
+                handler: function(){}
+            },{
+                iconCls: 'icon-user-save',
+                text: 'Save',
+                handler: function(){}
+           }],    	
+        columns: [{
+        	header: 'Name',
+        	width: 250,
+        	sortable:false,
+        	dataIndex:'name',
+        	field: {
+        	    xtype: 'textfield',
+        	    allowBlank: false
+        	}
+        }],
     	store: GLOBAL.contextstore,
-        viewConfig: {forceFit:true},
-        columnLines: false        
+        columnLines: true        
 	});	
+	
+
+	GLOBAL.tabsPanel = new Ext.TabPanel({  
+	    activeTab: 1, 
+	    defaults:{autoScroll:'true'},
+	    items: [
+	       {title:'Actions',html:'Actions'},    
+	       GLOBAL.contextsgrid,
+	       {title:'Projects',html:'Projects'},
+	    ] 
+	});
 	
     Ext.QuickTips.init();
     var viewPort = new Ext.Viewport({
@@ -44,29 +84,9 @@ Ext.onReady(function(){
             split: true
         }, 
     	items: [{
-            region: 'north',
-            collapsible: true,
-            title: 'North',
-            split: true,
-            height: 50,
-            html: 'north'
-        },{
-            region: 'west',
-            collapsible: true,
-            floatable: false,
-            title: 'Contexts/Projects..',
-            split: true,
-            width: '30%',
-            items:[GLOBAL.contextsgrid]
-        },{
             region: 'center',
-            title: 'Action...',
-            layout: 'border',
-            border: false,
-            items: [{
-            	region:'center',
-            	items:[]
-            }]
+            layout:'fit',
+            items: [GLOBAL.tabsPanel]
         }]
        })
     });
