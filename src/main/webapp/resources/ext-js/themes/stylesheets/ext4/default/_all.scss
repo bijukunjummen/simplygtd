@@ -2,6 +2,8 @@
 @import "blueprint/typography";
 
 $include-default: true !default;
+$include-default-uis: true !default;
+
 @import 'functions';
 @import 'variables';
 @import 'mixins';
@@ -29,7 +31,7 @@ $include-default: true !default;
         @if $include-default {
         	@include extjs-boundlist;
         	@include extjs-button;
-        	@include extjs-buttongroup;
+        	@include extjs-btn-group;
         	@include extjs-datepicker;
         	@include extjs-colorpicker;
         	@include extjs-menu;
@@ -69,7 +71,7 @@ $include-default: true !default;
     @if $include-default {
     	@include extjs-boundlist;
     	@include extjs-button;
-    	@include extjs-buttongroup;
+    	@include extjs-btn-group;
     	@include extjs-datepicker;
     	@include extjs-colorpicker;
     	@include extjs-menu;
@@ -105,3 +107,4 @@ $include-default: true !default;
     
     @include extjs-html;
 }
+

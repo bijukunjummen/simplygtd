@@ -4,7 +4,7 @@
 @mixin extjs-tab {
     @include x-frame(
         $cls: 'tab',
-        $ui: 'top',
+        $ui: 'default-top',
         $border-radius: $tab-top-border-radius,
         $border-width: $tab-top-border-width,
         $background-color: $tab-base-color,
@@ -15,7 +15,7 @@
 
     @include x-frame(
         $cls: 'tab',
-        $ui: 'bottom',
+        $ui: 'default-bottom',
         $border-radius: $tab-bottom-border-radius,
         $border-width: $tab-bottom-border-width,
         $background-color: $tab-base-color,
@@ -23,27 +23,32 @@
         $background-direction: bottom,
         $table: true
     );
-    
+
     .#{$prefix}tab {
         z-index: 1;
-        margin: 2px 0 0 2px;
+        margin: 0 0 0 $tab-spacing;
         display: inline-block;
         zoom: 1;
         *display: inline;
         white-space: nowrap;
-        height: $tab-height - 1;
+        height: $tab-height;
         border-color: $tab-border-color;
         cursor: pointer;
+        cursor: hand;
+
+        * {
+            cursor: pointer;
+            cursor: hand;
+        }
 
         em {
             display: block;
             padding: 0 6px;
+            line-height: 1px;
         }
-        
+
         button {
-            background-color: transparent;
-            background-position: 0 -1px;
-            background-repeat: no-repeat;
+            background: none;
             border: 0;
             padding: 0;
             margin: 0;
@@ -55,28 +60,42 @@
             @if $tab-font-family {
                 $font-family: $tab-font-family;
             }
-            
+
             color: $tab-color;
-            cursor: pointer;
             outline: 0 none;
-            
-            overflow: visible;
+
+            overflow: hidden;
+            overflow-x: visible;
             -o-text-overflow: ellipsis;
             text-overflow: ellipsis;
-            
+
             &::-moz-focus-inner {
                 border: 0;
                 padding: 0;
             }
+
+            .#{$prefix}tab-inner {
+                background-color: transparent;
+                background-repeat: no-repeat;
+                background-position: 0 -1px;
+                display: block;
+                text-align: center;
+                white-space: nowrap;
+            }
         }
-        
+
         img {
             display: none;
         }
     }
 
-    .#{$prefix}border-box .#{$prefix}tab {
-        height: $tab-height;
+    .#{$prefix}border-box {
+        .#{$prefix}tab-default-top {
+            height: $tab-height + top($tabbar-top-strip-border-width);
+        }
+        .#{$prefix}tab-default-bottom {
+            height: $tab-height + bottom($tabbar-bottom-strip-border-width);
+        }
     }
 
     @if $include-ie {
@@ -92,9 +111,17 @@
                 height: 100%;
             }
         }
+
+        .#{$prefix}ie .#{$prefix}tab-active button:active {
+            position: relative;
+            top: -1px;
+            left: -1px;
+        }
     }
 
-    .#{$prefix}tab-top {
+    $framepad: max(top($tab-top-border-radius), right($tab-top-border-radius)) - top($tab-top-border-width);
+
+    .#{$prefix}tab-default-top {
         @if $tab-inner-border {
             @include inner-border(
                 $width: $tab-top-inner-border-width,
@@ -102,24 +129,30 @@
             );
         }
 
-        border-bottom: 1px solid $tab-bar-strip-border-color !important;
-
-        $framepad: max(top($tab-top-border-radius), right($tab-top-border-radius)) - top($tab-top-border-width);
+        border-bottom: 1px solid $tabbar-strip-border-color !important;
 
         em {
             padding-bottom: $framepad;
         }
 
-        button {
-            height: $tab-height - $framepad * 2 - top($tab-top-border-width) - 1;
+        button,
+        .#{$prefix}tab-inner {
+            height: $tab-height - $framepad * 2 - top($tab-top-border-width);
+            line-height: $tab-height - $framepad * 2 - top($tab-top-border-width);
         }
     }
-    .#{$prefix}tab-top-active {
-        border-bottom-color: $tab-bar-strip-background-color !important;
+
+    .#{$prefix}nbr .#{$prefix}tab-default-top {
+        border-bottom-width: 1px !important;
     }
 
-    
-    .#{$prefix}tab-bottom {
+    .#{$prefix}tab-default-top-active {
+        border-bottom-color: $tabbar-strip-background-color !important;
+    }
+
+    $framepad: max(bottom($tab-bottom-border-radius), left($tab-bottom-border-radius)) - bottom($tab-bottom-border-width);
+
+    .#{$prefix}tab-default-bottom {
         @if $tab-inner-border {
             @include inner-border(
                 $width: $tab-bottom-inner-border-width,
@@ -127,43 +160,49 @@
             );
         }
 
-        border-top: 1px solid $tab-bar-strip-border-color !important;
-        
+        border-top: 1px solid $tabbar-strip-border-color !important;
+
         @include inner-border(
             $width: $tab-bottom-inner-border-width,
             $color: $tab-inner-border-color
         );
 
-        $framepad: max(bottom($tab-bottom-border-radius), left($tab-bottom-border-radius)) - bottom($tab-bottom-border-width);
-
         em {
             padding-top: $framepad;
         }
 
-        button {
-            height: $tab-height - $framepad * 2 - bottom($tab-bottom-border-width) - 1;
+        button,
+        .#{$prefix}tab-inner {
+            height: $tab-height - $framepad * 2 - bottom($tab-bottom-border-width);
+            line-height: $tab-height - $framepad * 2 - bottom($tab-bottom-border-width);
         }
     }
 
-    .#{$prefix}tab-bottom-active {
-        border-top-color: $tab-bar-strip-background-color !important;
+    .#{$prefix}nbr .#{$prefix}tab-default-bottom {
+        border-top-width: 1px !important;
+    }
+
+    .#{$prefix}tab-default-bottom-active {
+        border-top-color: $tabbar-strip-background-color !important;
     }
 
     .#{$prefix}tab-default-disabled {
         cursor: default;
-        
-        border-color: $tab-border-color-disabled;
-        @include background-gradient($tab-base-color-disabled, $tab-background-gradient-disabled);
-        
-        button {
-            color: $tab-color-disabled !important;
-            
+
+        * {
             cursor: default;
         }
-    }
-    
-    .#{$prefix}tab-text-icon-left {
+
+        border-color: $tab-border-color-disabled;
+        @include background-gradient($tab-base-color-disabled, $tab-background-gradient-disabled);
+
         button {
+            color: $tab-color-disabled !important;
+        }
+    }
+
+    .#{$prefix}tab-icon-text-left {
+        .#{$prefix}tab-inner {
             padding-left: 20px;
         }
     }
@@ -173,7 +212,7 @@
         @if $tab-border-color-over != $tab-border-color {
             border-color: $tab-border-color-over;
         }
-                        
+
         button {
             @if $tab-color-over != $tab-color {
                 color: $tab-color-over;
@@ -186,7 +225,7 @@
             }
             @if $tab-font-family-over != $tab-font-family {
                 font-family: $tab-font-family-over;
-            } 
+            }
         }
     }
 
@@ -204,11 +243,10 @@
             background-color: $tab-base-color-over;
         }
     }
-    
+
     //active
     .#{$prefix}tab-active {
         z-index: 3;
-        /*height: $tab-height + 1;*/
         @if $tab-border-color-active != $tab-border-color {
             border-color: $tab-border-color-active;
         }
@@ -225,10 +263,10 @@
             }
             @if $tab-font-family-active != $tab-font-family {
                 font-family: $tab-font-family-active;
-            } 
+            }
         }
     }
-    
+
     @if $tab-background-gradient-active != $tab-background-gradient {
         .#{$prefix}tab-top-active {
             @include background-gradient($tab-base-color-active, $tab-background-gradient-active, top);
@@ -243,7 +281,7 @@
             background-color: $tab-base-color-active;
         }
     }
-    
+
     //disabled
     .#{$prefix}tab-disabled {
         @if $tab-border-color-disabled != $tab-border-color {
@@ -262,10 +300,10 @@
             }
             @if $tab-font-family-disabled != $tab-font-family {
                 font-family: $tab-font-family-disabled;
-            } 
+            }
         }
     }
-    
+
     @if $tab-background-gradient-disabled != $tab-background-gradient {
         .#{$prefix}tab-top-disabled {
             background-image: none;
@@ -284,23 +322,23 @@
             background-color: $tab-base-color-disabled;
         }
     }
-    
+
     @if not $supports-gradients or $compile-all {
         .#{$prefix}nlg {
-            .#{$prefix}tab-top { background-image: theme-image($theme-name, 'tab/tab-top-bg.gif'); }
-            .#{$prefix}tab-bottom { background-image: theme-image($theme-name, 'tab/tab-bottom-bg.gif'); }
-            
-            .#{$prefix}tab-top-over { background-image: theme-image($theme-name, 'tab/tab-top-over-bg.gif'); }
-            .#{$prefix}tab-bottom-over { background-image: theme-image($theme-name, 'tab/tab-bottom-over-bg.gif'); }
-        
-            .#{$prefix}tab-top-active { background-image: theme-image($theme-name, 'tab/tab-top-active-bg.gif'); }
-            .#{$prefix}tab-bottom-active { background-image: theme-image($theme-name, 'tab/tab-bottom-active-bg.gif'); }
-            
-            .#{$prefix}tab-top-disabled { background-image: theme-image($theme-name, 'tab/tab-top-disabled-bg.gif') !important; }
-            .#{$prefix}tab-bottom-disabled { background-image: theme-image($theme-name, 'tab/tab-bottom-disabled-bg.gif') !important; }
-        }     
+            .#{$prefix}tab-top { background-image: theme-image($theme-name, 'tab/tab-default-top-bg.gif'); }
+            .#{$prefix}tab-bottom { background-image: theme-image($theme-name, 'tab/tab-default-bottom-bg.gif'); }
+
+            .#{$prefix}tab-top-over { background-image: theme-image($theme-name, 'tab/tab-default-top-over-bg.gif'); }
+            .#{$prefix}tab-bottom-over { background-image: theme-image($theme-name, 'tab/tab-default-bottom-over-bg.gif'); }
+
+            .#{$prefix}tab-top-active { background-image: theme-image($theme-name, 'tab/tab-default-top-active-bg.gif'); }
+            .#{$prefix}tab-bottom-active { background-image: theme-image($theme-name, 'tab/tab-default-bottom-active-bg.gif'); }
+
+            .#{$prefix}tab-top-disabled { background-image: theme-image($theme-name, 'tab/tab-default-top-disabled-bg.gif') !important; }
+            .#{$prefix}tab-bottom-disabled { background-image: theme-image($theme-name, 'tab/tab-default-bottom-disabled-bg.gif') !important; }
+        }
     }
-    
+
     .#{$prefix}tab-closable em {
         padding-right: $tab-closable-icon-width + 3;
     }
@@ -330,16 +368,16 @@
                 .#{$prefix}frame-br,
                 .#{$prefix}frame-tc,
                 .#{$prefix}frame-bc {
-                    background-image: theme-image($theme-name, 'tab/tab-top-over-corners.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-over-corners.gif');
                 }
                 .#{$prefix}frame-ml,
                 .#{$prefix}frame-mr {
-                    background-image: theme-image($theme-name, 'tab/tab-top-over-sides.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-over-sides.gif');
                 }
                 .#{$prefix}frame-mc {
                     background-color: $tab-base-color-over;
                     background-repeat: repeat-x;
-                    background-image: theme-image($theme-name, 'tab/tab-top-over-bg.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-over-bg.gif');
                 }
             }
 
@@ -350,16 +388,16 @@
                 .#{$prefix}frame-br,
                 .#{$prefix}frame-tc,
                 .#{$prefix}frame-bc {
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-over-corners.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-over-corners.gif');
                 }
                 .#{$prefix}frame-ml,
                 .#{$prefix}frame-mr {
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-over-sides.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-over-sides.gif');
                 }
                 .#{$prefix}frame-mc {
                     background-color: $tab-base-color-over;
                     background-repeat: repeat-x;
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-over-bg.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-over-bg.gif');
                 }
             }
 
@@ -370,16 +408,16 @@
                 .#{$prefix}frame-br,
                 .#{$prefix}frame-tc,
                 .#{$prefix}frame-bc {
-                    background-image: theme-image($theme-name, 'tab/tab-top-active-corners.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-active-corners.gif');
                 }
                 .#{$prefix}frame-ml,
                 .#{$prefix}frame-mr {
-                    background-image: theme-image($theme-name, 'tab/tab-top-active-sides.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-active-sides.gif');
                 }
                 .#{$prefix}frame-mc {
                     background-color: $tab-base-color-active;
                     background-repeat: repeat-x;
-                    background-image: theme-image($theme-name, 'tab/tab-top-active-bg.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-active-bg.gif');
                 }
             }
 
@@ -390,19 +428,19 @@
                 .#{$prefix}frame-br,
                 .#{$prefix}frame-tc,
                 .#{$prefix}frame-bc {
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-active-corners.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-active-corners.gif');
                 }
                 .#{$prefix}frame-ml,
                 .#{$prefix}frame-mr {
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-active-sides.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-active-sides.gif');
                 }
                 .#{$prefix}frame-mc {
                     background-color: $tab-base-color-active;
                     background-repeat: repeat-x;
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-active-bg.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-active-bg.gif');
                 }
             }
-            
+
             .#{$prefix}tab-top-disabled {
                 .#{$prefix}frame-tl,
                 .#{$prefix}frame-bl,
@@ -410,15 +448,15 @@
                 .#{$prefix}frame-br,
                 .#{$prefix}frame-tc,
                 .#{$prefix}frame-bc {
-                    background-image: theme-image($theme-name, 'tab/tab-top-disabled-corners.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-disabled-corners.gif');
                 }
                 .#{$prefix}frame-ml,
                 .#{$prefix}frame-mr {
-                    background-image: theme-image($theme-name, 'tab/tab-top-disabled-sides.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-disabled-sides.gif');
                 }
                 .#{$prefix}frame-mc {
                     background-repeat: repeat-x;
-                    background-image: theme-image($theme-name, 'tab/tab-top-disabled-bg.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-top-disabled-bg.gif');
                 }
             }
 
@@ -429,17 +467,17 @@
                 .#{$prefix}frame-br,
                 .#{$prefix}frame-tc,
                 .#{$prefix}frame-bc {
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-disabled-corners.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-disabled-corners.gif');
                 }
                 .#{$prefix}frame-ml,
                 .#{$prefix}frame-mr {
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-disabled-sides.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-disabled-sides.gif');
                 }
                 .#{$prefix}frame-mc {
                     background-repeat: repeat-x;
-                    background-image: theme-image($theme-name, 'tab/tab-bottom-disabled-bg.gif');
+                    background-image: theme-image($theme-name, 'tab/tab-default-bottom-disabled-bg.gif');
                 }
             }
-        }   
+        }
     }
 }
