@@ -10,7 +10,7 @@ Ext.require([
              'Ext.form.*'
          ]);
 
-var GLOBAL={}
+var GLOBAL={};
 Ext.onReady(function(){
     Ext.regModel('Context',{
         fields: [
@@ -30,7 +30,9 @@ Ext.onReady(function(){
 
 	GLOBAL.contextstore=Ext.create('Ext.data.Store', {model: 'Context'});
 	GLOBAL.contextstore.load({params:{start:0, limit:5}});
-	var rowEditing = new Ext.grid.RowEditing();
+	var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        clicksToEdit: 1
+    });
 	GLOBAL.contextsgrid = new Ext.grid.GridPanel({
     	title: 'Contexts',
     	plugins: [rowEditing],
@@ -75,7 +77,8 @@ Ext.onReady(function(){
 	});
 	
     Ext.QuickTips.init();
-    var viewPort = new Ext.Viewport({
+    var viewPort = Ext.create('Ext.container.Viewport',{
+    	renderTo: Ext.getBody(),
         layout: {
             type: 'border',
             padding: 5
@@ -88,7 +91,7 @@ Ext.onReady(function(){
             layout:'fit',
             items: [GLOBAL.tabsPanel]
         }]
-       })
+       });
     });
 ]]>
 </script>
