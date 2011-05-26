@@ -66,12 +66,10 @@ public class GtdContext {
         this.gtdUser = gtdUser;
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Id: ").append(getId()).append(", ");
-        sb.append("Version: ").append(getVersion()).append(", ");
-        sb.append("Name: ").append(getName()).append(", ");
-        sb.append("GtdUser: ").append(getGtdUser());
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		return "GtdContext [id=" + id + ", name=" + name + "]";
+	}
+
+
 }

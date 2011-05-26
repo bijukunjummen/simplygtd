@@ -93,14 +93,12 @@ public class GtdUser{
     	this.gtdAuthorities = gtdAuthorities;
     }
 
+	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Id: ").append(getId()).append(", ");
-		sb.append("Version: ").append(getVersion()).append(", ");
-		sb.append("Fullname: ").append(getFullname()).append(", ");
-		sb.append("Username: ").append(getUsername()).append(", ");
-		sb.append("Password: ").append(getPassword());
-		return sb.toString();
+		return "GtdUser [id=" + id + ", fullname=" + fullname + ", username="
+				+ username + ", gtdAuthorities=" + gtdAuthorities + "]";
 	}
+
+
 
 }

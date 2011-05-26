@@ -48,10 +48,12 @@ public class GtdContextDaoIntegrationTest {
 		assertThat(aContext.getName(), is("context1"));
 
 		aContext.setName("updated-context1");
+		
 		aContext = this.gtdContextDao.update(aContext);
+		System.out.println(aContext.getGtdUser());
 		assertThat(aContext.getName(), is("updated-context1"));
 
-		List<GtdContext> contextsByUser = this.gtdContextDao.findContextsByGtdUser("user1",1,10);
+		List<GtdContext> contextsByUser = this.gtdContextDao.findContextsByGtdUser("user1",0,10);
 		assertThat(contextsByUser, hasItems(gtdContextsMap.get("context1"), gtdContextsMap.get("context2"), gtdContextsMap.get("context3")));
 
 		List<GtdContext> contextsByName = this.gtdContextDao.findContextsByName("context5");
