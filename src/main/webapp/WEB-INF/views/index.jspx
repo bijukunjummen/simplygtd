@@ -1,55 +1,69 @@
 <script type="text/javascript" xmlns:c="http://java.sun.com/jsp/jstl/core" 
 	xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-<spring:url var="gtdcontextsJsonlistUrl" value="/gtdcontexts/jsonlist" />
+<spring:url var="gtdcontextsJsonlistUrl" value="/gtdcontexts/list.json" />
+<spring:url var="gtdcontextsJsonSaveUrl" value="/gtdcontexts/save.json" />
+
 <![CDATA[
-Ext.require([
-             'Ext.grid.*',
-             'Ext.data.*',
-             'Ext.util.*',
-             'Ext.state.*',
-             'Ext.form.*'
-         ]);
 
 var GLOBAL={};
-Ext.onReady(function(){
-    Ext.regModel('Context',{
+
+
+Ext.application({
+    name: 'Simply GTD',
+    launch: function() {
+
+    Ext.define('Context',{
+    	extend: 'Ext.data.Model',
         fields: [
                  {name: 'id', type: 'string'},
-                 {name: 'name', type: 'string'}
-     	],
-        proxy: {
-            type: 'ajax',
-            url: '${gtdcontextsJsonlistUrl}',
-            reader: {
-                type: 'json',
-                root: 'gtdcontexts',
-                totalProperty : 'totalSize'
-            }
-        }
+                 {name: 'name', type: 'string'},
+                 {name: 'version', type: 'string'}
+     	]
     });	
 
-	GLOBAL.contextstore=Ext.create('Ext.data.Store', {model: 'Context'});
-	GLOBAL.contextstore.load({params:{start:0, limit:5}});
-	var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-        clicksToEdit: 1
+    
+	GLOBAL.contextstore=Ext.create('Ext.data.Store', 
+	{
+			model: 'Context',
+			pageSize: 4,
+	        proxy: {
+	            type: 'ajax',
+	            url: '${gtdcontextsJsonlistUrl}',
+	            reader: {
+	                type: 'json',
+	                root: 'gtdcontexts',
+	                totalProperty : 'totalSize'
+	            }
+	        }							
+	});
+	GLOBAL.contextstore.load();
+	
+	GLOBAL.rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        clicksToEdit: 2
     });
-	GLOBAL.contextsgrid = new Ext.grid.GridPanel({
+	
+	GLOBAL.contextsgrid =Ext.create('Ext.grid.GridPanel',{
     	title: 'Contexts',
-    	plugins: [rowEditing],
+    	plugins: [GLOBAL.rowEditing],
     	tbar: [
     	   {
     		    iconCls: 'icon-user-add',
     		    text: 'Add Context',
-    		    handler: function(){}
+    		    handler: function(){
+    		    	addNewRecord();
+    		    }
     	   },{
                 iconCls: 'icon-user-delete',
                 text: 'Remove Context',
-                disabled: true,
-                handler: function(){}
+                handler: function() {
+                	removeRecord();
+                }
             },{
                 iconCls: 'icon-user-save',
                 text: 'Save',
-                handler: function(){}
+                handler: function(){
+                	saveContextRecords();
+                }
            }],    	
         columns: [{
         	header: 'Name',
@@ -62,11 +76,18 @@ Ext.onReady(function(){
         	}
         }],
     	store: GLOBAL.contextstore,
-        columnLines: true        
+        columnLines: true ,
+        dockedItems: [{
+            xtype: 'pagingtoolbar',
+            store: GLOBAL.contextstore,  
+            dock: 'bottom',
+            displayInfo: true
+        }]        
 	});	
 	
-
-	GLOBAL.tabsPanel = new Ext.TabPanel({  
+    
+	GLOBAL.tabsPanel = 
+		Ext.create('Ext.tab.Panel',{  
 	    activeTab: 1, 
 	    defaults:{autoScroll:'true'},
 	    items: [
@@ -76,7 +97,7 @@ Ext.onReady(function(){
 	    ] 
 	});
 	
-    Ext.QuickTips.init();
+    //Ext.QuickTips.init();
     var viewPort = Ext.create('Ext.container.Viewport',{
     	renderTo: Ext.getBody(),
         layout: {
@@ -92,6 +113,58 @@ Ext.onReady(function(){
             items: [GLOBAL.tabsPanel]
         }]
        });
+    }
+});
+
+function saveContextRecords(){
+    var data = {updatedata:[], deleteIds:[], newdata:[]};
+    
+    Ext.each(GLOBAL.contextstore.getNewRecords(),function(r) {
+        data.newdata.push({id:r.get("id"), name:r.get("name")});
     });
+
+    
+    Ext.each(GLOBAL.contextstore.getUpdatedRecords(),function(r) {
+            data.updatedata.push({id:r.get("id"), name:r.get("name"), version:r.get("version")});
+    });
+    
+    Ext.each(GLOBAL.contextstore.getRemovedRecords(),function(r) {
+        data.deleteIds.push(r.get("id"));
+    });       
+    
+    Ext.Ajax.request({
+    	url:'${gtdcontextsJsonSaveUrl}',
+    	jsonData:data, 
+    	loadMask: true, 
+    	method:"POST", 
+        success: function(resp) {
+        	//GLOBAL.contextstore.sync();
+            GLOBAL.contextstore.load();            
+        },
+        failure: function(){
+        	alert("Something failed..");
+        }
+    });
+    
+}
+
+function addNewRecord(){
+    GLOBAL.rowEditing.cancelEdit();
+    var r = Ext.create("Context", {
+        name: 'New Context'
+    });
+    
+    GLOBAL.contextstore.insert(0, r);
+    GLOBAL.rowEditing.startEdit(0, 0);                  
+}
+
+function removeRecord(){
+        var sm = GLOBAL.contextsgrid.getSelectionModel();
+        GLOBAL.rowEditing.cancelEdit();
+        GLOBAL.contextstore.remove(sm.getSelection());
+        if (GLOBAL.contextstore.getCount()>0){
+            sm.select(0);
+        }
+}
 ]]>
 </script>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_org_bk_simplygtd_domain_GtdUser" object="${gtduser}" path="/gtdusers" z="5OUflnywQSIrDTA6rsgAq+PEQkU=">
-        <field:display field="fullname" id="s_org_bk_simplygtd_domain_GtdUser_fullname" object="${gtduser}" z="CmEyAkllr4aoiUQeIxLqnnwyQcs="/>
-        <field:display field="username" id="s_org_bk_simplygtd_domain_GtdUser_username" object="${gtduser}" z="zV1eEcjFdd+XLMQQPJ1V6fp59pI="/>
-        <field:display field="password" id="s_org_bk_simplygtd_domain_GtdUser_password" object="${gtduser}" z="okStLc/C6HHgnRqe7HHsRrfY71A="/>
-    </page:show>
-</div>

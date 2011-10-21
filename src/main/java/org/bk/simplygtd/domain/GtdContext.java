@@ -48,7 +48,6 @@ public class GtdContext {
         this.id = id;
     }
     
-    @JsonIgnore
     public Integer getVersion() {
         return this.version;
     }

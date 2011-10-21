@@ -11,4 +11,6 @@ public interface GtdContextService {
 	Long countContextsByUserName(String userName);
 	GtdContext updateForUser(GtdContext gtdContext, String userName);
 	void remove(GtdContext gtdContext);
+	void removeContextWithIds(List<Long> deleteIds);
+	void updateContextsForUser(List<GtdContext> updatedata, String userName);
 }

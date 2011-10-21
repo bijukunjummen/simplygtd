@@ -5,8 +5,8 @@
   <jsp:output omit-xml-declaration="yes" />
 
 
-  <spring:url value="/resources/ext-js/ext-all-debug.js"  var="ext_all" />
-  <spring:url value="/resources/ext-js/css/ext-all.css" var="ext_css" />
+  <spring:url value="/resources/ext-js/ext-all.js"  var="ext_js" />
+  <spring:url value="/resources/ext-js/resources/css/ext-all.css" var="ext_css" />
   <spring:url value="/resources/images/favicon.ico" var="favicon" />
 
   <link rel="stylesheet" type="text/css" media="screen" href="${ext_css}"></link>
@@ -19,6 +19,6 @@
   </c:set>
 
  
-  <script src="${ext_all}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
+  <script src="${ext_js}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
 
 </jsp:root>

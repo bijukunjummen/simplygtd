@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-    <jsp:output omit-xml-declaration="yes"/>
-    <form:find finderName="ByStartDateLessThanEquals" id="ff_org_bk_simplygtd_domain_GtdAction" path="/gtdactions" z="75vkH818kpyZBQDVpry2DoayiS0=">
-        <field:datetime dateTimePattern="${gtdAction_startdate_date_format}" disableFormBinding="true" field="startDate" id="f_org_bk_simplygtd_domain_GtdAction_startDate" z="P8YQkjq5dG4o/xJRcesufnpbvh0="/>
-    </form:find>
-</div>

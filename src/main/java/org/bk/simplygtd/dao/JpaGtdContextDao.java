@@ -28,7 +28,7 @@ public class JpaGtdContextDao extends JpaDao<Long, GtdContext> implements GtdCon
 
 	@Override
     public List<GtdContext> findContextsByGtdUser(String userName, int firstResult, int maxResults) {
-        TypedQuery<GtdContext> q = this.entityManager.createQuery("SELECT o FROM GtdContext o WHERE o.gtdUser.username = :userName", GtdContext.class);
+        TypedQuery<GtdContext> q = this.entityManager.createQuery("SELECT o FROM GtdContext o WHERE o.gtdUser.username = :userName order by o.name", GtdContext.class);
         q.setParameter("userName", userName);
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
-    <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_org_bk_simplygtd_domain_GtdNote" modelAttribute="gtdNote" path="/gtdnotes" render="${empty dependencies}" z="M6Lp0rT2G3aqfuta88C4YnlJaCo=">
-        <field:textarea field="title" id="c_org_bk_simplygtd_domain_GtdNote_title" z="uJ4g6ImFwxaPrKkPqEhkPDObzrk="/>
-    </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_org_bk_simplygtd_domain_GtdNote" render="${not empty dependencies}" z="llE6DToUHUJJgC1notQ7iC838Do="/>
-</div>

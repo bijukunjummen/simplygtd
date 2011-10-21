@@ -3,54 +3,53 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	
 <spring:url value="/resources/j_spring_security_check" var="form_url" />
-Ext.require([
-             'Ext.grid.*',
-             'Ext.data.*',
-             'Ext.util.*',
-             'Ext.state.*',
-             'Ext.form.*'
-         ]);
-Ext.onReady(function(){
-    Ext.QuickTips.init(); 
-    var login = new Ext.FormPanel({ 
-        labelWidth:80,
-        url:'${fn:escapeXml(form_url)}', 
-        frame:true, 
-        title:'Please Login', 
-        defaultType:'textfield',
-        standardSubmit:true,
-    	monitorValid:true,
-        items:[{ 
-                fieldLabel:'Username', 
-                name:'j_username', 
-                allowBlank:false 
-            },{ 
-                fieldLabel:'Password', 
-                name:'j_password', 
-                inputType:'password', 
-                allowBlank:false 
-            }],     
-        buttons:[{ 
-                text:'Login',
-                formBind: true,  
-                handler:function(){ 
-                    login.getForm().submit(); 
-                } 
-            }] 
-    });
- 
- 
-    var win = new Ext.Window({
-        layout:'fit',
-        width:300,
-        height:150,
-        closable: false,
-        resizable: false,
-        plain: true,
-        border: false,
-        items: [login]
-    });
-    win.show();
-});
+<![CDATA[         
+Ext.application({
+    name: 'Simply GTD',
+    launch: function() {
+        var login = Ext.create("Ext.form.FormPanel", { 
+            labelWidth:80,
+            url:'${fn:escapeXml(form_url)}', 
+            frame:true, 
+            title:'Please Login', 
+            defaultType:'textfield',
+            standardSubmit:true,
+        	monitorValid:true,
+            items:[{ 
+                    fieldLabel:'Username', 
+                    name:'j_username', 
+                    allowBlank:false 
+                },{ 
+                    fieldLabel:'Password', 
+                    name:'j_password', 
+                    inputType:'password', 
+                    allowBlank:false 
+                }],     
+            buttons:[{ 
+                    text:'Login',
+                    formBind: true,  
+                    handler:function(){ 
+                        login.getForm().submit(); 
+                    } 
+                }] 
+        });      
+     
+        var win = Ext.create("Ext.window.Window", {
+            layout:'fit',
+            width:300,
+            height:150,
+            closable: false,
+            resizable: false,
+            plain: true,
+            border: false,
+            items: [login]
+        	
+        }); 
 
+        win.show();
+    	
+    }
+});
+         
+]]>         
 </script>
