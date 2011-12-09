@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JpaGtdUserDao extends JpaDao<Long, GtdUser> implements GtdUserDao {
 
+    public JpaGtdUserDao(){
+        super(GtdUser.class);
+    }
 	@Override
 	public List<GtdUser> findAllGTDUsers(int firstResult, int maxResults) {
 		return getEntityManager()

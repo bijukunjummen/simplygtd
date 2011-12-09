@@ -69,7 +69,7 @@ public class GtdContextController {
 
     @RequestMapping(value="delete.json", method = RequestMethod.POST)
     public ModelAndView jsondelete(@RequestBody GtdContext gtdContext) {
-    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //    	String userName = ((User)principal).getUsername();    	
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		this.gtdContextService.remove(this.gtdContextService.findById(gtdContext.getId()));

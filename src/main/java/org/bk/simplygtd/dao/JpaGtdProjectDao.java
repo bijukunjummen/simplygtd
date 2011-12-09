@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class JpaGtdProjectDao extends JpaDao<Long, GtdProject> implements GtdProjectDao{
+    public JpaGtdProjectDao(){
+        super(GtdProject.class);
+    }
 	@Override
 	public List<GtdProject> findGTDProjectsByGtdUser(GtdUser gtdUser) {
 		TypedQuery<GtdProject> q = this.entityManager.createQuery("select o from GtdProject o where o.gtdUser=:user", GtdProject.class);

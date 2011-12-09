@@ -3,6 +3,9 @@ package org.bk.simplygtd.dao;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.bk.simplygtd.domain.GtdContext;
 import org.springframework.stereotype.Repository;
@@ -10,6 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JpaGtdContextDao extends JpaDao<Long, GtdContext> implements GtdContextDao{
 
+    public JpaGtdContextDao(){
+        super(GtdContext.class);
+    }
 	@Override
 	public List<GtdContext> findContextEntries(int firstResult, int maxResults) {
 		return this.entityManager.createQuery("select o from GtdContext o", GtdContext.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
@@ -20,8 +26,13 @@ public class JpaGtdContextDao extends JpaDao<Long, GtdContext> implements GtdCon
 	@Override
 	public List<GtdContext> findContextsByName(String name) {
 		if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
-		TypedQuery<GtdContext> q = this.entityManager.createQuery("SELECT o from GtdContext o where o.name=:name", GtdContext.class);
-		q.setParameter("name", name);
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<GtdContext> c = cb.createQuery(GtdContext.class);
+		Root<GtdContext> contexts = c.from(GtdContext.class);
+		c.select(contexts).where(cb.equal(contexts.get("name"), name));
+		
+		
+		TypedQuery<GtdContext> q = this.entityManager.createQuery(c);
 		return q.getResultList();
 	}
 

@@ -1,7 +1,5 @@
 package org.bk.simplygtd.dao;
 
-import java.lang.reflect.ParameterizedType;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,9 +11,8 @@ public abstract class JpaDao<K, E> implements BaseDao<K, E> {
 	@PersistenceContext
 	protected EntityManager entityManager;
 
-	public JpaDao() {
-		ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
-		this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];
+	public JpaDao(Class<E> entityClass) {
+		this.entityClass = entityClass;
 	}
 
 	@Transactional

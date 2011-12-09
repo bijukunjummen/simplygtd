@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class JpaGtdActionDao extends JpaDao<Long, GtdAction> implements GtdActionDao{
+    public JpaGtdActionDao(){
+        super(GtdAction.class);
+    }
     public List<GtdAction> findGTDActionsByGtdUser(GtdUser gtdUser) {
         if (gtdUser == null) throw new IllegalArgumentException("The gtdUser argument is required");
         EntityManager em = this.getEntityManager();
