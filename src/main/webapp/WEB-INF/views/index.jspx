@@ -11,171 +11,245 @@
 
 var GLOBAL={};
 
+Ext.define('GTD.model.Context',{
+    extend: 'Ext.data.Model',
+    fields: [{name: 'id', type: 'string'},{name: 'name', type: 'string'},{name: 'version', type: 'string'}]
+}); 
 
-Ext.application({
-    name: 'Simply GTD',
-    launch: function() {
-
-    Ext.define('Context',{
-    	extend: 'Ext.data.Model',
-        fields: [
-	        {name: 'id', type: 'string'},
-	        {name: 'name', type: 'string'},
-	        {name: 'version', type: 'string'}
-     	]
-    });	
-
+Ext.define('GTD.store.Contexts', {
+    extend: 'Ext.data.Store',
+    model: 'GTD.model.Context',
+    autoLoad: true,
+    pageSize: 4,
+    autoLoad: {start: 0, limit: 4},
     
-	GLOBAL.contextstore=Ext.create('Ext.data.Store', 
-	{
-		model: 'Context',
-		autoSync:false,
-		autoLoad: true,
-		pageSize: 4,
-	       proxy: {
-	           type: 'ajax',
-	           api: {
-	        	   read: '${readUrl}',
-		           update: '${updateUrl}',
-		           destroy: '${deleteUrl}',
-		           create: '${createUrl}'
-               },
-	           reader: {
-	               type: 'json',
-	               root: 'data',
-	               totalProperty : 'totalSize'
-	           }
-	       }							
-	});
-	GLOBAL.contextstore.load();
-	
-	GLOBAL.rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-        clicksToEdit: 2
-    });
-	
-    GLOBAL.contextsgrid =Ext.create('Ext.grid.GridPanel',{
-        title: 'Contexts',
-    	plugins: [GLOBAL.rowEditing],
-    	tbar: [
-	   	{
-   		    iconCls: 'icon-user-add',
-   		    text: 'Add Context',
-   		    handler: function(){
-   		    	addNewRecord();
-   		    }
-	   	},{
-            iconCls: 'icon-user-delete',
-            text: 'Remove Context',
-            handler: function() {
-         	    removeRecord();
-            }
-	    },{
-            iconCls: 'icon-user-save',
-            text: 'Save',
-            handler: function(){
-         	    saveContextRecords();
-            }
-        }],    	
-        columns: [{
-        	header: 'Name',
-        	width: 250,
-        	sortable:false,
-        	dataIndex:'name',
-        	field: {
-        	    xtype: 'textfield',
-        	    allowBlank: false
-        	}
-        }],
-    	store: GLOBAL.contextstore,
-        columnLines: true ,
-        dockedItems: [{
-            xtype: 'pagingtoolbar',
-            store: GLOBAL.contextstore,  
-            dock: 'bottom',
-            displayInfo: true
-        }]        
-	});	
-	
-    
-	GLOBAL.tabsPanel = 
-		Ext.create('Ext.tab.Panel',{  
-	    activeTab: 1, 
-	    defaults:{autoScroll:'true'},
-	    items: [
-	       {title:'Actions',html:'Actions'},    
-	       GLOBAL.contextsgrid,
-	       {title:'Projects',html:'Projects'},
-	    ] 
-	});
-	
-    //Ext.QuickTips.init();
-    var viewPort = Ext.create('Ext.container.Viewport',{
-    	renderTo: Ext.getBody(),
-        layout: {
-            type: 'border',
-            padding: 5
+    proxy: {
+        type: 'ajax',
+        api: {
+            read: '${readUrl}',
+            update: '${updateUrl}',
+            destroy: '${deleteUrl}',
+            create: '${createUrl}'
         },
-        defaults: {
-            split: true
-        }, 
-    	items: [{
-            region: 'center',
-            layout:'fit',
-            items: [GLOBAL.tabsPanel]
-        }]
-       });
+        reader: {
+            type: 'json',
+            root: 'data',
+            totalProperty : 'totalSize'
+        },
+        writer: {
+            type: 'json',
+            writeAllFields: true,
+            encode: false
+        },
+        listeners: {
+            exception: function(proxy, response, operation){
+                Ext.MessageBox.show({
+                    title: 'REMOTE EXCEPTION',
+                    msg: operation.getError(),
+                    icon: Ext.MessageBox.ERROR,
+                    buttons: Ext.Msg.OK
+                });
+            }
+        }
     }
 });
 
-function saveContextRecords(){
-    //var data = {updatedata:[], deleteIds:[], newdata:[]};
-    GLOBAL.contextstore.sync();
-    
-    //Ext.each(GLOBAL.contextstore.getNewRecords(),function(r) {
-    //    data.newdata.push({id:r.get("id"), name:r.get("name")});
-    //});
-    
-    //Ext.each(GLOBAL.contextstore.getUpdatedRecords(),function(r) {
-    //        data.updatedata.push({id:r.get("id"), name:r.get("name"), version:r.get("version")});
-    //});
-    
-    //Ext.each(GLOBAL.contextstore.getRemovedRecords(),function(r) {
-    //    data.deleteIds.push(r.get("id"));
-    //});       
-    
-    //Ext.Ajax.request({
-    //  url:'${gtdcontextsJsonSaveUrl}',
-    //	jsonData:data, 
-    //	loadMask: true, 
-    //	method:"POST", 
-    //  success: function(resp) {
-    //    	//GLOBAL.contextstore.sync();
-    //        GLOBAL.contextstore.reLoad();            
-    //    },
-    //    failure: function(){
-    //    	alert("Something failed..");
-    //    }
-    //});
-}
+Ext.define('GTD.view.context.Edit', {
+    extend: 'Ext.window.Window',
+    alias : 'widget.contextedit',
+    requires: ['Ext.form.Panel','Ext.form.field.Text'],
+    title : 'Edit Context',
+    layout: 'fit',
+    autoShow: true,
+    width: 280,    
+    iconCls: 'icon-user',
+    initComponent: function() {
+        this.items = [
+            {
+                xtype: 'form',
+                padding: '5 5 0 5',
+                border: false,
+                style: 'background-color: #fff;',
+                
+                fieldDefaults: {
+                    anchor: '100%',
+                    labelAlign: 'left',
+                    allowBlank: false,
+                    combineErrors: true,
+                    msgTarget: 'side'
+                },
 
-function addNewRecord(){
-    GLOBAL.rowEditing.cancelEdit();
-    var r = Ext.create("Context", {
-        name: 'New Context'
-    });
-    
-    GLOBAL.contextstore.insert(0, r);
-    GLOBAL.rowEditing.startEdit(0, 0);                  
-}
+                items: [
+                    {
+                        xtype: 'textfield',
+                        name : 'id',
+                        fieldLabel: 'id',
+                        hidden:true
+                    },    
+                    {
+                        xtype: 'textfield',
+                        name : 'name',
+                        fieldLabel: 'Name'
+                    }       
+                ]
+            }
+        ];
+        this.dockedItems = [{
+            xtype: 'toolbar',
+            dock: 'bottom',
+            id:'buttons',
+            ui: 'footer',
+            items: ['->', {
+                iconCls: 'icon-save',
+                itemId: 'save',
+                text: 'Save',
+                action: 'save'
+            },{
+                iconCls: 'icon-reset',
+                text: 'Cancel',
+                scope: this,
+                handler: this.close
+            }]
+        }];
 
-function removeRecord(){
-    var sm = GLOBAL.contextsgrid.getSelectionModel();
-    GLOBAL.rowEditing.cancelEdit();
-    GLOBAL.contextstore.remove(sm.getSelection());
-    if (GLOBAL.contextstore.getCount()>0){
-        sm.select(0);
+        this.callParent(arguments);
     }
-    GLOBAL.contextstore.sync();
-}
+});
+
+
+Ext.define('GTD.view.context.List',{
+	extend:'Ext.grid.Panel',
+	alias: 'widget.contextlist',
+	iconCls: 'icon-grid',
+	title: 'Contexts',
+	store:'Contexts',
+	columns: [{
+        header: 'Name',
+        width: 250,
+        sortable:false,
+        dataIndex:'name',
+        field: {
+            xtype: 'textfield',
+            allowBlank: false
+        }
+    }],
+    initComponent: function() {
+        this.dockedItems = [{
+            xtype: 'toolbar',
+            items: [{
+                iconCls: 'icon-save',
+                itemId: 'add',
+                text: 'Add',
+                action: 'add'
+            },{
+                iconCls: 'icon-delete',
+                text: 'Delete',
+                action: 'delete'
+            }]
+        },
+        {
+            xtype: 'pagingtoolbar',
+            dock:'top',
+            store: 'Contexts',
+            displayInfo: true,
+            displayMsg: 'Displaying contexts {0} - {1} of {2}',
+            emptyMsg: "No contexts to display"
+        }];
+        
+        this.callParent(arguments);
+    }
+	
+});
+
+
+
+Ext.define('GTD.controller.Contexts', {
+    extend: 'Ext.app.Controller',
+    stores: ['Contexts'],
+    models: ['Context'],
+    views: ['context.Edit', 'context.List'],
+    refs: [{
+            ref: 'contextsPanel',
+            selector: 'panel'
+        },{
+            ref: 'contextlist',
+            selector: 'contextlist'
+        }
+    ],
+    init: function() {
+        this.control({
+            'contextlist dataview': {
+                itemdblclick: this.editContext
+            },
+            'contextlist button[action=add]': {
+                click: this.editContext
+            },
+            'contextlist button[action=delete]': {
+                click: this.deleteContext
+            },
+            'contextedit button[action=save]': {
+                click: this.updateContext
+            }
+        });
+    },
+
+    editContext: function(grid, record) {
+        var edit = Ext.create('GTD.view.context.Edit').show();
+        
+        if(record){
+            edit.down('form').loadRecord(record);
+        }
+    },
+    
+    updateContext: function(button) {
+        var win    = button.up('window'),
+            form   = win.down('form'),
+            record = form.getRecord(),
+            values = form.getValues();
+        
+        
+        if (values.id > 0){
+            record.set(values);
+        } else{
+            record = Ext.create('GTD.model.Context');
+            record.set(values);
+            record.setId(0);
+            this.getContextsStore().add(record);
+        }
+        
+        win.close();
+        this.getContextsStore().sync();
+    },
+    
+    deleteContext: function(button) {
+        
+        var grid = this.getContextlist(),
+        record = grid.getSelectionModel().getSelection(), 
+        store = this.getContextsStore();
+
+        store.remove(record);
+        this.getContextsStore().sync();
+    }
+});
+
+
+Ext.application({
+    name: 'GTD',
+    controllers: [
+        'Contexts'
+    ],    
+    launch: function() {
+    	Ext.create('Ext.container.Viewport', {
+            layout: 'fit',
+            items: [
+                {
+                    xtype:'contextlist'
+                }
+            ]
+        });
+    }
+});
+
+
 ]]>
 </script>
