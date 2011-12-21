@@ -25,11 +25,6 @@
 			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
 			<name>JBoss Repo</name>
 		</repository>
-		<repository>
-			<id>EclipseLink Repo</id>
-			<url>http://mirrors.ibiblio.org/pub/mirrors/eclipse/rt/eclipselink/maven.repo</url>
-			<name>EclipseLink Repo</name>
-		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
