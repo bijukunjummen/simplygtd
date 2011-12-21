@@ -58,16 +58,6 @@ public class GtdContextServiceImpl implements GtdContextService{
 	    
     }
 
-	
-	public void setGtdContextDao(GtdContextDao gtdContextDao) {
-    	this.gtdContextDao = gtdContextDao;
-    }
-
-	public void setGtdUserDao(GtdUserDao gtdUserDao) {
-    	this.gtdUserDao = gtdUserDao;
-    }
-
-
 	@Override
 	@Transactional
 	public void removeContextWithIds(List<Long> deleteIds) {
@@ -94,6 +84,15 @@ public class GtdContextServiceImpl implements GtdContextService{
 			}
 		}
 	}
+
+	
+	public void setGtdContextDao(GtdContextDao gtdContextDao) {
+    	this.gtdContextDao = gtdContextDao;
+    }
+
+	public void setGtdUserDao(GtdUserDao gtdUserDao) {
+    	this.gtdUserDao = gtdUserDao;
+    }
 
 
 }
