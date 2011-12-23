@@ -1,0 +1,10 @@
+Backlog
+1. As a task user, Projects group together related tasks for me to track them together
+2. As a task user, I need a context for each task for me to better identify what needs to be done when.
+3. As a user, I need a fast and easy way to enter tasks
+4. As a user, I want to track my progress for a day
+5. As a user, I want to track my progress for a week
+6. As a user, I want to track my progress for a month
+
+
+Done
