@@ -9,7 +9,13 @@
 
 <spring:url var="gtdcontextsJsonSaveUrl" value="/gtdcontexts/save.json" />
 
-<spring:url var="contextjs" value="/app/context.js" />
+<spring:url var="contextApp" value="/app/app.js" />
+<spring:url var="contextController" value="/app/controller/Context.js" />
+<spring:url var="contextModel" value="/app/model/Context.js" />
+<spring:url var="contextStore" value="/app/store/Contexts.js" />
+<spring:url var="contextViewEdit" value="/app/view/context/Edit.js" />
+<spring:url var="contextViewList" value="/app/view/context/List.js" />
+
 
 <script type="text/javascript">
 var GLOBAL={};
@@ -20,22 +26,9 @@ GLOBAL.context.deleteUrl = '${deleteUrl}';
 GLOBAL.context.createUrl = '${createUrl}';
 </script>
 
-<script src="${contextjs}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
-<script type="text/javascript">
-Ext.application({
-    name: 'GTD',
-    controllers: [
-        'Contexts'
-    ],    
-    launch: function() {
-        Ext.create('Ext.container.Viewport', {
-            layout: 'fit',
-            items: [
-                {
-                    xtype:'contextlist'
-                }
-            ]
-        });
-    }
-});
-</script>
+<script src="${contextModel}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
+<script src="${contextStore}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
+<script src="${contextViewEdit}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
+<script src="${contextViewList}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
+<script src="${contextController}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
+<script src="${contextApp}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
