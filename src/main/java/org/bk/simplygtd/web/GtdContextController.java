@@ -2,7 +2,6 @@ package org.bk.simplygtd.web;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -79,23 +78,4 @@ public class GtdContextController {
 		return modelAndView;
     	
     }
-
-    
-    @RequestMapping(value="save.json", method = RequestMethod.POST)
-    public ModelAndView jsonsave(@RequestBody ContextSaveRequest contextSaveRequest) {
-    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	String userName = ((User)principal).getUsername();    	
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		List<Long> deleteIds = contextSaveRequest.getDeleteIds();
-    	this.gtdContextService.removeContextWithIds(deleteIds);
-    	this.gtdContextService.updateContextsForUser(contextSaveRequest.getUpdatedata(), userName);
-    	this.gtdContextService.updateContextsForUser(contextSaveRequest.getNewdata(), userName);
-    	modelMap.put("success", "true");
-    	MappingJacksonJsonView mappingJacksonView = new MappingJacksonJsonView();
-		ModelAndView modelAndView = new ModelAndView(mappingJacksonView, modelMap);
-		return modelAndView;
-    	
-    }
-    
-    
 }

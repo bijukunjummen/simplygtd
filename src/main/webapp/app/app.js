@@ -1,15 +1,21 @@
 Ext.application({
     name: 'GTD',
     controllers: [
-        'Contexts'
+        'Contexts',
+        'Projects'
     ],    
     launch: function() {
         Ext.create('Ext.container.Viewport', {
             layout: 'fit',
-            items: [
-                {
-                    xtype:'contextlist'
-                }
+            items: [Ext.create('Ext.tab.Panel',{
+            	items:[
+            	       {
+            	    	   xtype:'contextlist'
+            	       },{
+            	    	   xtype:'projectlist'
+            	       }
+            		]
+            	})
             ]
         });
     }

@@ -15,7 +15,6 @@ import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="gtdprojects")
@@ -25,11 +24,9 @@ public class GtdProject{
     private String name;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "S-")
     private Date startDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "S-")
     private Date completedDate;
 
     private Boolean isDone;
@@ -55,7 +52,6 @@ public class GtdProject{
         this.id = id;
     }
     
-    @JsonIgnore
     public Integer getVersion() {
         return this.version;
     }

@@ -1,13 +1,14 @@
 package org.bk.simplygtd.dao;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.junit.matchers.JUnitMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import java.util.List;
 import java.util.Map;
 
-import org.bk.simplygtd.domain.GtdContext;
 import org.bk.simplygtd.domain.GtdProject;
 import org.bk.simplygtd.domain.GtdUser;
 import org.junit.Before;
@@ -53,15 +54,11 @@ public class GtdProjectDaoIntegrationTest {
 		assertThat(gtdProject, is(equalTo(gtdProjectsMap.get("project1"))));
 		
 		GtdUser user1 = this.gtdUserDao.findUserByUserName("user1");
-		List<GtdProject> user1Projects = this.gtdProjectDao.findGTDProjectsByGtdUser(user1);
+		List<GtdProject> user1Projects = this.gtdProjectDao.findGTDProjectsByGtdUser(user1.getUsername(), 0, 10);
 		assertThat(user1Projects, hasItems(gtdProjectsMap.values().toArray(new GtdProject[0])));
-		
+	
+		assertThat(this.gtdProjectDao.countProjectsByUserName(user1.getUsername()), is(5L));
 		this.gtdProjectDao.remove(gtdProject);
 		assertThat( this.gtdProjectDao.findById(1L), is(nullValue()));
-		
-		List<GtdProject> project2ForUser1 = this.gtdProjectDao.findGTDProjectsByGtdUserAndName(user1, "project2");
-		assertThat(project2ForUser1.size(), is(1));
-		
 	}
-
 }

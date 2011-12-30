@@ -67,33 +67,4 @@ public class GtdContextServiceImpl implements GtdContextService{
     	this.gtdUserDao = gtdUserDao;
     }
 
-
-	@Override
-	@Transactional
-	public void removeContextWithIds(List<Long> deleteIds) {
-		if (deleteIds!=null){
-			for (Long deleteId: deleteIds){
-				GtdContext gtdContext = this.gtdContextDao.findById(deleteId);
-				this.gtdContextDao.remove(gtdContext);
-			}
-		}
-	}
-
-	@Override
-	@Transactional
-	public void updateContextsForUser(List<GtdContext> updatedata, String userName) {
-		GtdUser gtdUser = this.gtdUserDao.findUserByUserName(userName);
-		if (updatedata!=null){
-			for (GtdContext gtdContext: updatedata){
-				gtdContext.setGtdUser(gtdUser);
-				if (gtdContext.getId()!=null){
-					this.gtdContextDao.update(gtdContext);
-				}else{
-					this.gtdContextDao.persist(gtdContext);					
-				}
-			}
-		}
-	}
-
-
 }
