@@ -2,6 +2,7 @@ package org.bk.simplygtd.web;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -49,7 +50,6 @@ public class GtdContextController {
     	MappingJacksonJsonView mappingJacksonView = new MappingJacksonJsonView();
 		ModelAndView modelAndView = new ModelAndView(mappingJacksonView, modelMap);
 		return modelAndView;
-    	
     }
 
     @RequestMapping(value="update.json", method = RequestMethod.POST)

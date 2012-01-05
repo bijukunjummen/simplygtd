@@ -58,7 +58,7 @@ public class GtdContextServiceImpl implements GtdContextService{
 	    
     }
 
-	
+
 	public void setGtdContextDao(GtdContextDao gtdContextDao) {
     	this.gtdContextDao = gtdContextDao;
     }
@@ -66,5 +66,6 @@ public class GtdContextServiceImpl implements GtdContextService{
 	public void setGtdUserDao(GtdUserDao gtdUserDao) {
     	this.gtdUserDao = gtdUserDao;
     }
+
 
 }

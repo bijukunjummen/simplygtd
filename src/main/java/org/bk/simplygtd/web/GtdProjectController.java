@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.bk.simplygtd.domain.GtdProject;
 import org.bk.simplygtd.service.GtdProjectService;
+import org.bk.simplygtd.types.TypeWrapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -53,16 +54,16 @@ public class GtdProjectController {
     }
 
     @RequestMapping(value="update.json", method = RequestMethod.POST)
-    public ModelAndView jsonupdate(@RequestBody GtdProject gtdProject) {
+    public @ResponseBody TypeWrapper<GtdProject> jsonupdate(@RequestBody GtdProject gtdProject) {
     	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	String userName = ((User)principal).getUsername();    	
-		Map<String, Object> modelMap = new HashMap<String, Object>();
+//		Map<String, Object> modelMap = new HashMap<String, Object>();
 		GtdProject gtdProjectUpdated = this.gtdProjectService.updateForUser(gtdProject, userName);
-    	modelMap.put("success", "true");
-    	modelMap.put("data", Collections.singletonList(gtdProjectUpdated));
-    	MappingJacksonJsonView mappingJacksonView = new MappingJacksonJsonView();
-		ModelAndView modelAndView = new ModelAndView(mappingJacksonView, modelMap);
-		return modelAndView;
+//    	modelMap.put("success", "true");
+//    	modelMap.put("data", Collections.singletonList(gtdProjectUpdated));
+//    	MappingJacksonJsonView mappingJacksonView = new MappingJacksonJsonView();
+//		ModelAndView modelAndView = new ModelAndView(mappingJacksonView, modelMap);
+		return new TypeWrapper<GtdProject>(Collections.singletonList(gtdProjectUpdated), true);
     	
     }
 

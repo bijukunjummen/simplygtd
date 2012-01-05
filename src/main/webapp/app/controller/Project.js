@@ -4,11 +4,17 @@ Ext.define('GTD.controller.Projects', {
     models: ['Project'],
     views: ['project.Edit', 'project.List'],
     refs: [{
-            ref: 'projectsPanel',
-            selector: 'panel'
+            ref: 'projectedit',
+            selector: 'projectedit'
         },{
             ref: 'projectlist',
             selector: 'projectlist'
+        },{
+            ref: 'startDate',
+            selector: 'projectedit > #startDate'
+        },{
+            ref: 'completedDate',
+            selector: 'projectedit > #completedDate'
         }
     ],
     init: function() {
@@ -40,14 +46,21 @@ Ext.define('GTD.controller.Projects', {
             form   = win.down('form'),
             record = form.getRecord(),
             values = form.getValues();
-        
+        	var startDate = form.down('#startDate');
+        	var completedDate = form.down('#completedDate');
+        	
+        	
         
         if (values.id > 0){
             record.set(values);
+            record.set('startDate', startDate.getValue());
+            record.set('completedDate', completedDate.getValue());
         } else{
             record = Ext.create('GTD.model.Project');
             record.set(values);
             record.setId(0);
+            record.set('startDate', startDate.getValue());
+            record.set('completedDate', completedDate.getValue());
             this.getProjectsStore().add(record);
         }
         

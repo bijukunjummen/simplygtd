@@ -1,4 +1,5 @@
 package org.bk.simplygtd.domain;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="gtdprojects")
@@ -24,10 +26,12 @@ public class GtdProject{
     private String name;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    @DateTimeFormat(pattern="yyyy/MM/dd hh:mm:ss a")
+    private Calendar startDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date completedDate;
+    @DateTimeFormat(pattern="yyyy/MM/dd hh:mm:ss a")
+    private Calendar completedDate;
 
     private Boolean isDone;
 
@@ -68,19 +72,19 @@ public class GtdProject{
         this.name = name;
     }
     
-    public Date getStartDate() {
+    public Calendar getStartDate() {
         return this.startDate;
     }
     
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
     }
     
-    public Date getCompletedDate() {
+    public Calendar getCompletedDate() {
         return this.completedDate;
     }
     
-    public void setCompletedDate(Date completedDate) {
+    public void setCompletedDate(Calendar completedDate) {
         this.completedDate = completedDate;
     }
     

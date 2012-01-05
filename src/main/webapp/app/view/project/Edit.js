@@ -5,7 +5,7 @@ Ext.define('GTD.view.project.Edit', {
     title : 'Edit Project',
     layout: 'fit',
     autoShow: true,
-    width: 280,    
+    width: 350,    
     iconCls: 'icon-user',
     initComponent: function() {
         this.items = [
@@ -37,11 +37,13 @@ Ext.define('GTD.view.project.Edit', {
                     },                    
                     {
                         xtype: 'datetimefield',
+                        itemId:'startDate',
                         name : 'startDate',
                         fieldLabel: 'Start Date'
                     },                    
                     {
                         xtype: 'datetimefield',
+                        itemId:'completedDate',
                         name : 'completedDate',
                         fieldLabel: 'Completed Date'
                     },                    

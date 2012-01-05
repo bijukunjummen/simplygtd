@@ -4,8 +4,8 @@ Ext.define('GTD.controller.Contexts', {
     models: ['Context'],
     views: ['context.Edit', 'context.List'],
     refs: [{
-            ref: 'contextsPanel',
-            selector: 'panel'
+            ref: 'contextedit',
+            selector: 'contextedit'
         },{
             ref: 'contextlist',
             selector: 'contextlist'

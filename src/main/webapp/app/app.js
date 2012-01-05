@@ -1,3 +1,8 @@
+Ext.JSON.encodeDate = function(o)
+{
+   return '"' + Ext.Date.format(o, 'c') + '"';
+};
+
 Ext.application({
     name: 'GTD',
     controllers: [
